@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WhatsApp</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="shortcut icon"
+      href="https://freepngimg.com/save/19323-whatsapp-transparent/1012x1024"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="stylesheet" href="/stylesheets/profileEdit.css" />
+  </head>
+  <body>
+    <div class="main">
+      <div class="mini-main">
+        <div class="left">
+          <div class="whatsaapIcon">
+            <i class="ri-whatsapp-line"></i>
+          </div>
+          <div class="satatu-msg">
+            <i class="ri-chat-download-line satus-common-prop"></i>
+            <br />
+            <i class="ri-phone-line satus-common-prop"></i>
+            <br />
+            <i class="ri-signal-tower-line satus-common-prop"></i>
+          </div>
+          <div class="userId left-bottom">
+            <div class="bottom-icon-container">
+              <i class="ri-star-line satus-common-prop"></i>
+              <i class="ri-chat-download-fill satus-common-prop"></i>
+              <i class="ri-settings-2-line satus-common-prop"></i>
+              <i
+                ><img
+                  id="proileUpdate"
+                  src="/images/<%= LoggedInUser.profileImage %>"
+                  alt=""
+              /></i>
+            </div>
+          </div>
+        </div>
+        <div class="middle">
+          <div class="top">
+            <h4>WhatsApp</h4>
+            <div class="icon-mid">
+              <div class="input-friend-search_icons">
+                <h3>Chats</h3>
+                <div class="icons-middle">
+                  <i class="ri-edit-box-line searchNow"></i>
+                  <i class="ri-more-2-fill"></i>
+                </div>
+              </div>
+              <input
+                id="searchChats"
+                type="text"
+                placeholder="search or star a new chats"
+              />
+            </div>
+          </div>
+          <div class="userFriends">
+            <% LoggedInUser.friends.forEach(friend => { %>
+            <div
+              class="friend"
+              onclick="openChats('/images/<%= friend.profileImage %>', '<%= friend.username %>', '<%= friend._id %>')"
+              id="shery_<%= friend._id %>"
+            >
+              <img src="/images/<%= friend.profileImage %>" alt="" />
+              <p><%= friend.username %></p>
+            </div>
+            <% }) %>
+          </div>
+        </div>
+        <div class="right">
+          <div class="left-top-right">
+            <!-- <div class="userAppended">
+              <a href="/profileImage?username=<%= LoggedInUser.username %>"><img src="/images/<%= LoggedInUser.profileImage %>" alt="" /></a>
+              <p><%= LoggedInUser.username %></p>
+            </div> -->
+            <div class="userAppended">
+              <a href="/profileImage?username=<%= LoggedInUser.username %>">
+                  <img src="/images/<%= LoggedInUser.profileImage %>" alt="Profile Image" />
+              </a>
+              <p><%= LoggedInUser.username %></p>
+            </div>
+            <div class="callingSystem">
+              <div class="videoAndAdio">
+                <i class="ri-vidicon-line IconsSize"></i>
+                <i class="ri-phone-line IconsSize"></i>
+              </div>
+              <i class="ri-search-line IconsSize"></i>
+            </div>
+          </div>
+          <div class="right-bottom conversationalArea"></div>
+
+          <div class="left-top-right chatBot">
+            <input
+              type="text"
+              placeholder="Enter Message .... ?"
+              class="InputSender"
+              required
+            />
+            <button onclick="sendMsg()">send</button>
+          </div>
+        </div>
+      </div>
+      <div class="userSearch">
+        <div class="center">
+          <input
+            type="text"
+            name="username"
+            placeholder="search user by username..."
+            id="userSearchInput"
+          />
+          <div class="users"></div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="img-container">
+          <i class="ri-pencil-line imgEdit"></i>
+          <img src="/images/<%= LoggedInUser.profileImage %>" alt="" />
+        </div>
+        <div class="sub-container">
+          <div class="name">
+            <h3><%= LoggedInUser.username %></h3>
+            <p><i class="ri-pencil-line"></i></p>
+          </div>
+          <div class="about-me">
+            <div class="ab-me">
+              <span>About Me.</span>
+              <p><i class="ri-pencil-line"></i></p>
+            </div>
+            <div class="messageAboutMe">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Provident incidunt impedit velit ad aliquam. At.
+            </div>
+          </div>
+          <a href="/logout"><button id="logout">Log out</button></a>
+          <div class="List">
+            <a href="/profileImage?username=<%= LoggedInUser.username %>"><p>View Image</p></a>
+            <a href="/user/removeImage"><p>Remove img</p></a>
+            <label for="profileImageInput" id="deepyChange"> <a href="/user/setNewImage"></a>change img</label>
+            <input type="file" id="profileImageInput" style="display: none;" accept="image/*" required>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="/javascripts/script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.7/axios.min.js" integrity="sha512-NQfB/bDaB8kaSXF8E77JjhHG5PM6XVRxvHzkZiwl3ddWCEPBa23T76MuWSwAJdMGJnmQqM0VeY9kFszsrBEFrQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+
+      const username = "<%= LoggedInUser.username %>";
+
+      socket.emit("join-server", username);
+
+      let oppositeUser = null;
+
+      document
+        .querySelector("#userSearchInput")
+        .addEventListener("input", async (event) => {
+          const data = document.querySelector("#userSearchInput").value;
+
+          if (data == "") {
+            document.querySelector(".center .users").innerHTML = "";
+            return;
+          }
+          const response = await axios.post("/searchUsers", {
+            data: data,
+          });
+
+          document.querySelector(".center .users").innerHTML = "";
+          response.data.forEach((searchUsers) => {
+            appendSearchUsers(
+              searchUsers.profileImage,
+              searchUsers.username,
+              searchUsers._id
+            );
+          });
+        });
+
+      function appendSearchUsers(profileImage, username, id) {
+        const template = `
+         <div onclick="addFriend(event,'${id}','${profileImage}','${username}')" class="user" id="${id}" >
+            <img src="/images/${profileImage}" alt="">
+            <h3> ${username} </h3>
+          </div>`;
+        document.querySelector(".center .users").innerHTML += template;
+      }
+
+      function appendChats(profileImage, username, id) {
+        if (document.querySelector(`.userFriends #shery_${id}`)) {
+          return;
+        }
+        const template = `
+        <div class="friend" id="shery_${id}">
+          <img src="/images/${profileImage}" alt="" />
+            <p>${username}<p/>
+          </div>
+        `;
+        document.querySelector(".userFriends").innerHTML += template;
+      }
+
+      async function addFriend(event, id, profileImage, username) {
+        try {
+          const response = await axios.post("/addFriend", {
+            friendId: id,
+          });
+
+          console.log(response);
+          console.log("this is working");
+        } catch (err) {
+          console.log(err);
+          console.log("Error is arrived");
+        }
+
+        appendChats(profileImage, username, id);
+        document.querySelector(".userSearch").style.display = "none";
+      }
+
+      let flag1 = 0;
+      document.querySelector(".searchNow").addEventListener("click", () => {
+        const userSearch = document.querySelector(".userSearch");
+        userSearch.style.display = flag1 ? "none" : "initial";
+        flag1 = 1 - flag1;
+      });
+
+      async function openChats(profileImage, username, id) {
+        document.querySelector(".right").style.display = "initial";
+
+        const response = await axios.post("/getMgessage", {
+          oppositeUser: username,
+        });
+        document.querySelector(".conversationalArea").innerHTML = "";
+
+        response.data.forEach((message) => {
+          if (message.sender != username) {
+            appendOutgoingMessage(message.data);
+          } else {
+            appendInCoingMessage(message.data);
+          }
+        });
+
+        oppositeUser = username;
+        document.querySelector(".userAppended a img").setAttribute("src", profileImage);
+        document.querySelector(".userAppended p").innerHTML = username;
+        document.querySelector(".userAppended a").setAttribute("href", "/profileImage?username=" + username);
+
+      }
+
+      function appendOutgoingMessage(message) {
+        let template = `<div class="message outgoingMessage">${message}</div>`;
+        document.querySelector(".conversationalArea").innerHTML += template;
+      }
+      function appendInCoingMessage(message) {
+        let template = `<div class="message ">${message}</div>`;
+        document.querySelector(".conversationalArea").innerHTML += template;
+      }
+      function sendMsg() {
+        const message = document.querySelector(".InputSender").value;
+        if (message === "") return;
+        appendOutgoingMessage(message);
+        document.querySelector(".InputSender").value = "";
+
+        const messageObject = {
+          message,
+          receiver: oppositeUser,
+          sender: username,
+        };
+        console.log(messageObject);
+        socket.emit("send-private-message", messageObject);
+      }
+      socket.on("receive-private-message", (messageObject) => {
+        appendInCoingMessage(messageObject.message);
+      });
+
+      window.addEventListener("keypress", (event) => {
+        if (event.keyCode === 13 || event.which === 13) {
+          sendMsg();
+        }
+      });
+
+      let flag = 1;
+      document.getElementById("proileUpdate").addEventListener("click", () => {
+        if (flag === 1) {
+          document.querySelector(".container").style.bottom = "0.5rem";
+          flag = 0;
+        } else {
+          document.querySelector(".container").style.bottom = "-100%";
+          document.querySelector(".List").style.display = "none";
+          flag = 1;
+        }
+      });
+
+      let checker = 0;
+      document.querySelector(".imgEdit").addEventListener("click", () => {
+        if (checker === 0) {
+          document.querySelector(".List").style.display = "initial";
+          checker = 1;
+        } else {
+          document.querySelector(".List").style.display = "none";
+          checker = 0;
+        }
+      });
+      
+     document.getElementById('deepyChange').addEventListener('click', function(event) {
+        // Programmatically trigger a click event on the file input
+        sendingRequstForChanging();
+    });
+
+    function sendingRequstForChanging(){
+      document.getElementById('profileImageInput').addEventListener('change', function(event) {
+        var formData = new FormData();
+        formData.append('profileImage', this.files[0]);
+
+        axios.post('/changeImage?username=<%= LoggedInUser.username %>', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+        .then(function(response) {
+            console.log('Profile image updated successfully.');
+        })
+        .catch(function(error) {
+            console.error('Error updating profile image:', error);
+        });
+    });
+    }
+
+    </script>
+  </body>
+</html>

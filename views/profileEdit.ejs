@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UserTemplate</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+  <style>
+    html,body{
+      width: 100%;
+      height: 100%;
+      background-color: rgb(129, 122, 122);
+      display: flex;
+    }
+    .container{
+      position: absolute;
+      background-color: rgba(33, 32, 32, 0.877);
+      max-width: 15rem;
+      min-height: fit-content;
+      z-index: 99999;
+      display: flex;
+      left: 5%;
+      flex-direction: column;
+      font-family: Arial;
+      color: #fffffff9;
+      padding: 0.4rem;
+      border-radius: 10px;
+      padding-bottom: 1rem;
+      bottom: -100%;
+      transition: all cubic-bezier(0.215, 0.610, 0.355, 1) 1s;
+    }
+    .img-container{
+      display: flex; 
+      justify-content: center;
+      align-items: center;
+      padding: 0.3rem;
+      position: relative;
+      z-index: 9999;
+    }
+    .img-container i{
+      position: absolute;
+      z-index: -99;
+    }
+    .img-container:hover i{
+      z-index: 99;
+      background-color: rgba(227, 223, 223, 0.404);
+      padding: 1.4rem;
+      border-radius: 50%;
+    }
+    .img-container img{
+      display: flex; 
+      justify-content: center;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+    }
+    .about-me{
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      background-color: rgba(90, 87, 87, 0.452);
+    }
+    .ab-me{
+      padding: 0;
+      margin: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .message{
+      width: 97%;
+      height: fit-content;
+      padding: 0.2rem;
+      font-size: 12px;
+      flex-wrap: wrap;
+    }
+
+    .name{
+      margin-top: 0.4rem;
+      display: flex; 
+      align-items: center;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+    .name h3{
+      margin: 0;
+      padding: 0;
+      padding-left: 0.2rem;
+      padding-right: 0.2rem;
+    }
+
+    #logout{
+      display: flex; 
+      justify-content: center;
+      background-color: rgb(250, 247, 247);
+      margin-left: 25%;
+      margin-top: 1rem;
+      padding: 10px 32px;
+      text-decoration: none;
+      border:none;
+      border-radius: 10px;
+      color: red;
+    }
+    i{
+      padding:3px;
+      background-color:transparent;
+      border-radius: 2px;
+      border: none;
+      transition: all cubic-bezier(0.175, 0.885, 0.32, 1.275) 1s;
+    }
+    i:hover{
+      background-color:rgba(84, 81, 81, 0.571);
+    }
+    i,button:hover{
+      cursor: pointer;
+      /* background-color: green; */
+    }
+
+    .List{
+      width: 100px;
+      height: fit-content;
+      background-color: rgba(46, 45, 45, 0.982);
+      font-family: Arial;
+      font-size: small;
+      text-align: center;
+      justify-content: center;
+      flex-direction: column;
+      display: flex;
+      padding: 6px;
+      border-radius: 5px;
+      position: absolute;
+      top: -20%;
+      display: none;
+      transition: all cubic-bezier(0.215, 0.610, 0.355, 1) 1s;
+      left: 30%;
+    }
+    .List p{
+      text-decoration: none;
+      color: #ffffff;
+      padding: 0;
+      margin: 0;
+      padding: 2px;
+      cursor: pointer;
+      transition: all cubic-bezier(0.175, 0.885, 0.32, 1.275) 1s;
+    }
+    .List p:hover{
+      opacity: 0.8;
+      color: rgb(222, 23, 47);
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="img-container">
+      <i class="ri-pencil-line imgEdit"></i>
+      <img src="https://www.pngitem.com/pimgs/m/445-4458959_fortnite-sergeant-png-image-fortnite-default-skin-transparent.png" alt="">
+    </div>
+    <div class="sub-container">
+       <div class="name">
+        <h3>Nitesh Kumar Yadav </h3>
+        <p><i class="ri-pencil-line"></i></p>
+       </div>
+       <div class="about-me">
+         <div class="ab-me">
+          <span>About Me.</span>
+          <p><i class="ri-pencil-line"></i></p>
+         </div>
+         <div class="message">
+           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident incidunt impedit velit ad aliquam. At.
+         </div>
+       </div>
+       <button id="logout" value="logout">Log out</button>
+       <div class="List">
+        <p>View img</p>
+        <p>Remove img</p>
+        <p>change img</p>
+       </div>
+    </div>
+  </div>
+  <div class="button" style="width: 40px; height: 20px; background-color: red; margin-top: 10px; padding: 1rem;">Tipo</div>
+  <script>
+    document.querySelector('.imgEdit').addEventListener('click',()=>{
+      document.querySelector('.List').style.display="initial";
+    })
+    document.querySelector('.button').addEventListener('click',()=>{
+      document.querySelector('.container').style.bottom = "0";
+    })
+  </script>
+</body>
+</html>

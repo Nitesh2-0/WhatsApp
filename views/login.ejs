@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="/stylesheets/login.css" />
+    <link
+      rel="shortcut icon"
+      href="https://freepngimg.com/save/19323-whatsapp-transparent/1012x1024"
+      type="image/x-icon"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h2>Login Form</h2>
+      <form action="/login" method="POST">
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="username" placeholder="Enter name" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password" placeholder="Enter password" required>
+        </div>
+        <div class="botton-cont">
+          <button type="submit" id="login">Login</button>
+          <button onclick="event.preventDefault()" id="register" >Register</button>
+        </div>
+      </form>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var button = document.getElementById("register");
+
+        button.addEventListener("click", function () {
+
+          window.location.href = '/register';
+        });
+      });
+    </script>
+  </body>
+</html>
