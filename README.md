@@ -11,5 +11,5 @@ Here user can chart one to one persone. this application is desktop based applic
 -  MongoDB
 
 ## Feature of application 
-- One to One Chappting
+- One to One Chating
   
